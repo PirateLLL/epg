@@ -25,12 +25,12 @@ jobs:
 
       - name: Grab EPG
         # 在这里修改或添加你想要的站点，--output 指定保存的文件名
-        run: npm run grab -- --sites=sky.com --output=guide.xml
+        run: npm run grab -- --sites=sky.com,watch.sportsnet.ca --output=guide.xml
 
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add guide.xml
-          # 只有在文件有变化时才提交，防止报错
+          # 使用 -f 强制添加被忽略的文件
+          git add -f guide.xml
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update EPG $(date)" && git push)
